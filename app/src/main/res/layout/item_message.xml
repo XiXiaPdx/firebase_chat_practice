@@ -21,6 +21,13 @@
         android:textAppearance="?android:attr/textAppearanceLarge"
         tools:text="Message" />
 
+    <Button
+        android:id="@+id/delete"
+        android:layout_width="50dp"
+        android:layout_height="wrap_content"
+        android:layout_marginLeft="150dp"
+        android:text="Del" />
+
     <TextView
         android:id="@+id/nameTextView"
         android:layout_width="wrap_content"

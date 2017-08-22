@@ -85,7 +85,7 @@ public class MainActivity extends AppCompatActivity {
         mSendButton = (Button) findViewById(R.id.sendButton);
 
         // Initialize message ListView and its adapter
-        List<FriendlyMessage> friendlyMessages = new ArrayList<>();
+        final ArrayList<FriendlyMessage> friendlyMessages = new ArrayList<>();
         mMessageAdapter = new MessageAdapter(this, R.layout.item_message, friendlyMessages);
         mMessageListView.setAdapter(mMessageAdapter);
 
@@ -147,10 +147,10 @@ public class MainActivity extends AppCompatActivity {
         mSendButton.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View view) {
-                FriendlyMessage friendlymessage = new FriendlyMessage(mMessageEditText.getText().toString(), mUsername, null);
-                mDatabaseReference.push().setValue(friendlymessage);
+                String pushID = mDatabaseReference.push().getKey();
+                FriendlyMessage friendlymessage = new FriendlyMessage(mMessageEditText.getText().toString(), mUsername, null, pushID);
+                mDatabaseReference.child(pushID).setValue(friendlymessage);
                 mMessageEditText.setText("");
-
             }
         });
     }
@@ -221,6 +221,7 @@ public class MainActivity extends AppCompatActivity {
                 public void onChildAdded(DataSnapshot dataSnapshot, String s) {
                     //when listener is first added, code here will run. future messages added, this runs too
                     FriendlyMessage friendlyMessage = dataSnapshot.getValue(FriendlyMessage.class);
+                    friendlyMessage.setId(dataSnapshot.getKey());
                     mMessageAdapter.add(friendlyMessage);
                 }
 
@@ -231,7 +232,8 @@ public class MainActivity extends AppCompatActivity {
 
                 @Override
                 public void onChildRemoved(DataSnapshot dataSnapshot) {
-
+                    FriendlyMessage friendlymessage = dataSnapshot.getValue(FriendlyMessage.class);
+                    mMessageAdapter.remove(friendlymessage);
                 }
 
                 @Override

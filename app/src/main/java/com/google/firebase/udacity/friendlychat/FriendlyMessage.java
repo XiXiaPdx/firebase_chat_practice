@@ -15,19 +15,24 @@
  */
 package com.google.firebase.udacity.friendlychat;
 
+import android.util.Log;
+import android.widget.Toast;
+
 public class FriendlyMessage {
 
     private String text;
     private String name;
     private String photoUrl;
+    private String id;
 
     public FriendlyMessage() {
     }
 
-    public FriendlyMessage(String text, String name, String photoUrl) {
+    public FriendlyMessage(String text, String name, String photoUrl, String pushId) {
         this.text = text;
         this.name = name;
         this.photoUrl = photoUrl;
+        id = pushId;
     }
 
     public String getText() {
@@ -52,5 +57,26 @@ public class FriendlyMessage {
 
     public void setPhotoUrl(String photoUrl) {
         this.photoUrl = photoUrl;
+    }
+
+    public String getId() {
+        return id;
+    }
+
+    public void setId(String id) {
+        this.id = id;
+    }
+
+    @Override
+    public boolean equals (Object obj) {
+
+        // for remove method of ArrayAdapt. It is a custom equals check to use pushId of message to be deleted as equivalence.
+         if(obj instanceof FriendlyMessage){
+                FriendlyMessage other = (FriendlyMessage) obj;
+                return this.id.equals(other.id);
+            }else{
+                return false;
+            }
+
     }
 }

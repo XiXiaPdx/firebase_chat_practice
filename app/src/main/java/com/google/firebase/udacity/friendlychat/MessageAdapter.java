@@ -5,16 +5,24 @@ import android.content.Context;
 import android.view.View;
 import android.view.ViewGroup;
 import android.widget.ArrayAdapter;
+import android.widget.Button;
 import android.widget.ImageView;
+import android.widget.ListView;
 import android.widget.TextView;
+import android.widget.Toast;
 
 import com.bumptech.glide.Glide;
 
+import java.util.ArrayList;
 import java.util.List;
 
 public class MessageAdapter extends ArrayAdapter<FriendlyMessage> {
-    public MessageAdapter(Context context, int resource, List<FriendlyMessage> objects) {
+    private Context context;
+    private ArrayList<FriendlyMessage> messages;
+    public MessageAdapter(Context context, int resource, ArrayList<FriendlyMessage> objects) {
         super(context, resource, objects);
+        this.context = context;
+        messages = objects;
     }
 
     @Override
@@ -23,11 +31,19 @@ public class MessageAdapter extends ArrayAdapter<FriendlyMessage> {
             convertView = ((Activity) getContext()).getLayoutInflater().inflate(R.layout.item_message, parent, false);
         }
 
+        Button deleteButton = (Button) convertView.findViewById(R.id.delete);
         ImageView photoImageView = (ImageView) convertView.findViewById(R.id.photoImageView);
         TextView messageTextView = (TextView) convertView.findViewById(R.id.messageTextView);
         TextView authorTextView = (TextView) convertView.findViewById(R.id.nameTextView);
 
         FriendlyMessage message = getItem(position);
+
+        deleteButton.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                Toast.makeText(context, "works", Toast.LENGTH_SHORT).show();
+            }
+        });
 
         boolean isPhoto = message.getPhotoUrl() != null;
         if (isPhoto) {
