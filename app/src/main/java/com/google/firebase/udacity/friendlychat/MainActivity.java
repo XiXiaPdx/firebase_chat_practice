@@ -233,6 +233,7 @@ public class MainActivity extends AppCompatActivity {
                 @Override
                 public void onChildRemoved(DataSnapshot dataSnapshot) {
                     FriendlyMessage friendlymessage = dataSnapshot.getValue(FriendlyMessage.class);
+                    Toast.makeText(MainActivity.this, friendlymessage.getText() , Toast.LENGTH_SHORT).show();
                     mMessageAdapter.remove(friendlymessage);
                 }
 
